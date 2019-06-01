@@ -1,5 +1,5 @@
 {
-  "name": "@minterjs/minterjs",
+  "name": "minterjs",
   "version": "0.0.1",
   "description": "Minter Network API npm package for JavaScript Developers",
   "main": "index.js",

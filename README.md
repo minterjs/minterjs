@@ -2,6 +2,12 @@
 
 Development in progress.
 
+## Install
+
+```bash
+npm i minterjs
+```
+
 ## Done
 
 ```js
