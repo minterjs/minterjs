@@ -4,7 +4,7 @@
 */
 
 /** TODO:
- /addresses?addresses=_&height=_
+ /addresses?addresses=_&height=_ issue: https://github.com/MinterTeam/minter-explorer-api/issues/56
  /block?height=_
  /candidate?pub_key=_&height=_
  /candidates?height=_&include_stakes=_

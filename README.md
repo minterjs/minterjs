@@ -21,6 +21,10 @@ MinterJS.peers();
 - Telegram: @minterjs (https://t.me/minterjs http://teleg.run/minterjs)
 - Skype: @vvmspace
 
+## Intersections
+
+- Issue for arrays in GET queries: https://github.com/MinterTeam/minter-explorer-api/issues/56
+
 ## Donations
 
 KARMA/BIP: Mx41b2cfc557dc4661a9526a5a3efcd2cc984339d1
