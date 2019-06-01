@@ -32,10 +32,10 @@ class MinterJS {
     }
 
     async get({path, data}){
-        const url = `${this.host}/${path}`;
-        let result = await axios.get(url, data).catch(err => log(err.message));
+        const url = `${this.host}/${path}?${require('querystring').encode(data)}`;
+        let result = await axios.get(url).catch(err => log(err.message));
 
-        return result && result.data || null;
+        return result && result.data || {};
     }
 
     async peers(){
