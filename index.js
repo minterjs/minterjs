@@ -1,5 +1,9 @@
+/**
+ DONE:
+    /address?address=_&height=_
+*/
+
 /** TODO:
- /address?address=_&height=_
  /addresses?addresses=_&height=_
  /block?height=_
  /candidate?pub_key=_&height=_
@@ -37,6 +41,12 @@ class MinterJS {
         const {result} = await this.get({path: 'net_info'});
         return result && result.peers || [];
     }
+
+    async address({address, height}){
+        const {result} = await this.get({path: 'address', data: {address, height}});
+        return result || [];
+    }
+
 }
 
 module.exports = (auth = {}) => {return new MinterJS(auth);};
