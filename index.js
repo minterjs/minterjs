@@ -44,7 +44,7 @@ class MinterJS {
 
     async address({address, height}){
         const {result} = await this.get({path: 'address', data: {address, height}});
-        return result || [];
+        return result || null;
     }
 
 }
