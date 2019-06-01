@@ -28,7 +28,10 @@ const log = require('./libs/log');
 class MinterJS {
     constructor(auth = {}) {
         this.host = auth.host || 'http://localhost:8841';
-        this.tx = auth.tx || 0.1;
+        this.fee = auth.fee || 0.1;
+        this.privateKey = auth.privateKey;
+        this.tx = require('minterjs-tx');
+        this.sdk = require('minter-js-sdk');
     }
 
     async get({path, data}){
