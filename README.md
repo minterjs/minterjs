@@ -8,7 +8,7 @@ Development in progress.
 const MinterJS = require('minterjs')({});
 
 /** /address?address=_&height=_ */
-MinterJS.address({address: 'Mx50d9e92706ce51341c5f8f0c57afe1950a3ea922'});
+MinterJS.address({address: 'Mx41b2cfc557dc4661a9526a5a3efcd2cc984339d1'});
 
 /** Peers from net_info */
 MinterJS.peers();
