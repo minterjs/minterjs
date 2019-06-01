@@ -1,14 +1,14 @@
 /**
  DONE:
     /address?address=_&height=_
+    /coin_info?symbol=_&height=_
+    /block?height=_
 */
 
 /** TODO:
  /addresses?addresses=_&height=_ issue: https://github.com/MinterTeam/minter-explorer-api/issues/56
- /block?height=_
  /candidate?pub_key=_&height=_
  /candidates?height=_&include_stakes=_
- /coin_info?symbol=_&height=_
  /estimate_coin_buy?coin_to_sell=_&coin_to_buy=_&value_to_buy=_&height=_
  /estimate_coin_sell?coin_to_sell=_&coin_to_buy=_&value_to_sell=_&height=_
  /estimate_coin_sell_all?coin_to_sell=_&coin_to_buy=_&value_to_sell=_&gas_price=_&height=_
@@ -45,6 +45,16 @@ class MinterJS {
 
     async address({address, height}){
         const {result} = await this.get({path: 'address', data: {address, height}});
+        return result || null;
+    }
+
+    async coin_info({symbol, height}){
+        const {result} = await this.get({path: 'coin_info', data: {symbol, height}}).catch(e => e);
+        return result || null;
+    }
+
+    async block({height}){
+        const {result} = await this.get({path: 'block', data: {height}}).catch(e => e);
         return result || null;
     }
 
