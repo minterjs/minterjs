@@ -33,7 +33,8 @@ class MinterJS {
 
     async get({path, data}){
         const url = `${this.host}/${path}`;
-        let result = await axios.get(url, data).catch(err => log(err => log(e.message)));
+        let result = await axios.get(url, data).catch(err => log(err.message));
+
         return result && result.data || null;
     }
 
