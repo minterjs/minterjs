@@ -5,7 +5,7 @@ Development in progress.
 ## Contacts
 
 - E-mail: minterjs@vvm.space
-- Telegram: @vvmspace
+- Telegram: @minterjs (https://t.me/minterjs http://teleg.run/minterjs)
 - Skype: @vvmspace
 
 ## Donations
