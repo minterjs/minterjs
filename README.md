@@ -1,4 +1,4 @@
-# minterjs
+# minterjs - our minter masternode: Mp3df654b34c167443ef52e8644266866813b92d4a6ff9c0245c259750a199a455 (3% only)
 
 Development in progress.
 
