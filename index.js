@@ -24,7 +24,7 @@
 
 const axios = require('axios');
 const log = require('./libs/log');
-const {Minter} = require('minter-js-sdk');
+const {Minter, DelegateTxParams} = require('minter-js-sdk');
 
 class MinterJS {
     constructor(auth = {}) {
@@ -56,6 +56,22 @@ class MinterJS {
         const path = `${this.explorer_api}/addresses/${address}`;
         const {data} = await axios.get(path).catch(e => log(e.message)) || {};
         return data && data.data && data.data.balances || {};
+    }
+
+    async delegate({publicKey, coinSymbol, stake, feeCoinSymbol}) {
+        coinSymbol = coinSymbol || 'BIP';
+        feeCoinSymbol = feeCoinSymbol || coinSymbol;
+        publicKey = publicKey || 'Mp629b5528f09d1c74a83d18414f2e4263e14850c47a3fac3f855f200111111111';
+        const txParams = new DelegateTxParams({
+            privateKey: this.privateKey,
+            chainId: 1,
+            publicKey,
+            coinSymbol,
+            stake,
+            feeCoinSymbol,
+            message: 'MinterJS',
+        });
+        this.node.postTx(txParams);
     }
 
     async peers(){
