@@ -24,6 +24,7 @@
 
 const axios = require('axios');
 const log = require('./libs/log');
+const MinterSDK = require('minter-js-sdk');
 
 class MinterJS {
     constructor(auth = {}) {
@@ -31,7 +32,7 @@ class MinterJS {
         this.fee = auth.fee || 0.1;
         this.privateKey = auth.privateKey;
         this.tx = require('minterjs-tx');
-        this.sdk = require('minter-js-sdk');
+        this.node = new MinterSDK({apiType: 'node', baseURL: this.host});
     }
 
     async get({path, data}){
