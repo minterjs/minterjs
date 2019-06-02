@@ -24,15 +24,17 @@
 
 const axios = require('axios');
 const log = require('./libs/log');
-const MinterSDK = require('minter-js-sdk');
+const {Minter} = require('minter-js-sdk');
 
 class MinterJS {
     constructor(auth = {}) {
         this.host = auth.host || 'http://localhost:8841';
+        this.explorer_api = auth.explorer_api || 'https://explorer-api.minter.network/api/v1';
+        this.address = auth.address || 'Mx7926f1944b8faabb3b440b394543ae6f5b2f8f37';
         this.fee = auth.fee || 0.1;
         this.privateKey = auth.privateKey;
         this.tx = require('minterjs-tx');
-        this.node = new MinterSDK({apiType: 'node', baseURL: this.host});
+        this.node = new Minter({apiType: 'node', baseURL: this.host});
     }
 
     async get({path, data}){
@@ -40,6 +42,13 @@ class MinterJS {
         let result = await axios.get(url).catch(err => log(err.message));
 
         return result && result.data || {};
+    }
+
+    async delegations({address}){
+        address = address || this.address;
+        const path = `${this.explorer_api}/addresses/${address}/delegations`;
+        const {data} = await axios.get(path).catch(e => log(e.message));
+        return data && data.data && {...data.data.data, total: data.data.filter(delegation => delegation.coin == 'BIP').map(delegation => parseFloat(delegation.value)).reduce((a,b) => a+b)} || {};
     }
 
     async peers(){
