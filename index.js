@@ -51,6 +51,13 @@ class MinterJS {
         return data && data.data && {...data.data.data, total: data.data.filter(delegation => delegation.coin == 'BIP').map(delegation => parseFloat(delegation.value)).reduce((a,b) => a+b)} || {};
     }
 
+    async balances({address}) {
+        address = address || this.address;
+        const path = `${this.explorer_api}/addresses/${address}`;
+        const {data} = await axios.get(path).catch(e => log(e.message)) || {};
+        return data && data.data && data.data.balances || {};
+    }
+
     async peers(){
         const {result} = await this.get({path: 'net_info'});
         return result && result.peers || [];
