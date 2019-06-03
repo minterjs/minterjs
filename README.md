@@ -1,6 +1,8 @@
 # minterjs
 
-Development in progress.
+Development in progress. Welcome to contribute!
+
+NPM: https://www.npmjs.com/package/minterjs
 
 ## Install
 
