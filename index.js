@@ -25,6 +25,7 @@
 const axios = require('axios');
 const log = require('./libs/log');
 const {Minter, DelegateTxParams} = require('minter-js-sdk');
+const qs = require('querystring');
 
 class MinterJS {
     constructor(auth = {}) {
@@ -49,6 +50,14 @@ class MinterJS {
         const path = `${this.explorer_api}/addresses/${address}/delegations`;
         const {data} = await axios.get(path).catch(e => log(e.message)) || {};
         return data && data.data && {...data.data.data, total: data.data.filter(delegation => delegation.coin == 'BIP').map(delegation => parseFloat(delegation.value)).reduce((a,b) => a+b)} || {};
+    }
+
+    async transactions(query = {}) {
+        const address = query.address || this.address;
+        const querystring = query && `?${qs.stringify(query)}` || '';
+        const path = `${this.explorer_api}/addresses/${address}/transactions${querystring}`;
+        const {data} = await axios.get(path).catch(e => log(e.message)) || {};
+        return data && data.data || {};
     }
 
     async balances({address}) {
