@@ -53,6 +53,9 @@ MinterJS.balances({address});
 
 /** Delegate */
 MinterJS.delegate({coinSymbol /** = BIP */, feeCoinSymbol /** = BIP */, stake, publicKey  /** default: minter.store */});
+
+/** Transactions */
+MinterJS.transactions({address /** optional */, startblock /** optional */, endblock /** optional */, page /** optional */});
 ```
 
 ## Contacts
