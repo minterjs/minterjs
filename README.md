@@ -23,7 +23,7 @@ npm i minterjs
 })();
 ```
 
-### Run:
+### Run in cron:
 
 ```bash
 privateKey=BLA_BLA_BLA address=YOUR_ADDRESS_FOR_MONITORING publicKey=PUBLIC_KEY_OF_FAVORITE_NODE nodeHost=http://minter.digriz.tech:8841 node /redelegate/index.js
