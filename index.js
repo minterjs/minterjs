@@ -58,10 +58,11 @@ class MinterJS {
         return data && data.data && data.data.balances || {};
     }
 
-    async delegate({publicKey, coinSymbol, stake, feeCoinSymbol}) {
+    async delegate({publicKey, coinSymbol, stake, feeCoinSymbol, message}) {
         coinSymbol = coinSymbol || 'BIP';
         feeCoinSymbol = feeCoinSymbol || coinSymbol;
         publicKey = publicKey || 'Mp629b5528f09d1c74a83d18414f2e4263e14850c47a3fac3f855f200111111111';
+        message = message || 'https://github.com/minterjs/minterjs';
         const txParams = new DelegateTxParams({
             privateKey: this.privateKey,
             chainId: 1,
@@ -69,7 +70,7 @@ class MinterJS {
             coinSymbol,
             stake,
             feeCoinSymbol,
-            message: 'MinterJS',
+            message,
         });
         this.node.postTx(txParams);
     }
