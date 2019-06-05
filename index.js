@@ -24,7 +24,7 @@
 
 const axios = require('axios');
 const log = require('./libs/log');
-const {Minter, DelegateTxParams} = require('minter-js-sdk');
+const {Minter, DelegateTxParams, SellAllTxParams} = require('minter-js-sdk');
 const qs = require('querystring');
 
 class MinterJS {
@@ -45,7 +45,7 @@ class MinterJS {
         return result && result.data || {};
     }
 
-    async delegations({address}){
+    async delegations({address, coinToBuy}) {
         address = address || this.address;
         const path = `${this.explorer_api}/addresses/${address}/delegations`;
         const {data} = await axios.get(path).catch(e => log(e.message));
@@ -53,21 +53,29 @@ class MinterJS {
         results.totals = {};
         results.filter(e => e.coin).map(e => {
             const value = parseFloat(e.value);
-            results.totals[e.coin] && (results.totals[e.coin] += value) || (results.totals[e.coin] = value);
+            results.totals[e.coin] && (results.totals[e.coin].value += value) || (results.totals[e.coin] = {value});
         });
+        for (let key in results.totals) {
+            const total = results.totals[key];
+            const coinToSell = key;
+            const estimate = {};
+            estimate[key] = await this.estimateCoinSell({coinToBuy, coinToSell, valueToSell: total.value});
+            results.totals[key] = {...total, ...estimate, coin: coinToSell};
+        }
         return results;
     }
 
-    /*async delegatedSum(totals, coinToBuy){
-        for (var key in totals){
-            // log(key);
-            valueToSell = Math.floor(totals[key] * 10000) / 10000;
-            const par = {coinToSell: key, coinToBuy: coinToBuy || 'BIP', valueToSell};
-            log(par);
-            const estimate = await this.node.estimateCoinSell(par);
-            console.log(estimate);
+    async estimateCoinSell({coinToBuy, valueToSell, coinToSell}) {
+        if (coinToBuy == coinToSell) {
+            return valueToSell;
         }
-    }*/
+        coinToBuy = coinToBuy || 'BIP';
+        valueToSell = Math.floor(valueToSell * 10000) / 10000;
+        // const valueToSell = totals[key];
+        const par = {coinToSell, coinToBuy: coinToBuy || 'BIP', valueToSell};
+        const estimate = await this.node.estimateCoinSell(par).catch(e => e);
+        return estimate.will_get * (valueToSell - estimate.commission) / valueToSell;
+    }
 
     async transactions(query = {}) {
         const address = query.address || this.address;
