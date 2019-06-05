@@ -48,8 +48,15 @@ class MinterJS {
     async delegations({address}){
         address = address || this.address;
         const path = `${this.explorer_api}/addresses/${address}/delegations`;
-        const {data} = await axios.get(path).catch(e => log(e.message)) || {};
-        return data && data.data && {...data.data, total: data.data.filter(delegation => delegation.coin == 'BIP').map(delegation => parseFloat(delegation.value)).reduce((a,b) => a+b)} || {};
+        const {data} = await axios.get(path).catch(e => log(e.message));
+        const results = data && data.data || {};
+        results.totals = {};
+        results.filter(e => e.coin).map(e => {
+            console.log(results);
+            const value = parseFloat(e.value);
+            results.totals[e.coin] && (results.totals[e.coin] += value) || (results.totals[e.coin] = value);
+        });
+        return results;
     }
 
     async transactions(query = {}) {
