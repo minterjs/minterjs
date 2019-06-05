@@ -48,19 +48,21 @@ class MinterJS {
     async delegations({address, coinToBuy}) {
         address = address || this.address;
         const path = `${this.explorer_api}/addresses/${address}/delegations`;
-        const {data} = await axios.get(path).catch(e => log(e.message));
+        const {data} = await axios.get(path);
         const results = data && data.data || {};
         results.totals = {};
         results.filter(e => e.coin).map(e => {
             const value = parseFloat(e.value);
             results.totals[e.coin] && (results.totals[e.coin].value += value) || (results.totals[e.coin] = {value});
         });
-        for (let key in results.totals) {
-            const total = results.totals[key];
-            const coinToSell = key;
-            const estimate = {};
-            estimate[key] = await this.estimateCoinSell({coinToBuy, coinToSell, valueToSell: total.value});
-            results.totals[key] = {...total, ...estimate, coin: coinToSell};
+        if (coinToBuy) {
+            for (let key in results.totals) {
+                const total = results.totals[key];
+                const coinToSell = key;
+                const estimate = {};
+                estimate[key] = await this.estimateCoinSell({coinToBuy, coinToSell, valueToSell: total.value});
+                results.totals[key] = {...total, ...estimate, coin: coinToSell};
+            }
         }
         return results;
     }
