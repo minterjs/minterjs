@@ -108,7 +108,7 @@ class MinterJS {
             feeCoinSymbol,
             message,
         });
-        this.node.postTx(txParams);
+        return this.node.postTx(txParams);
     }
 
     async peers(){
