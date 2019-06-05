@@ -50,7 +50,6 @@ class MinterJS {
         }
         coinToBuy = coinToBuy || 'BIP';
         valueToSell = Math.floor(valueToSell * 10000) / 10000;
-        // const valueToSell = totals[key];
         const par = {coinToSell, coinToBuy: coinToBuy || 'BIP', valueToSell};
         const estimate = await this.node.estimateCoinSell(par);
         return estimate.will_get * (valueToSell - estimate.commission) / valueToSell;
