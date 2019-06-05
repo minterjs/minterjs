@@ -10,7 +10,6 @@ class MinterJS {
         this.address = auth.address || 'Mx7926f1944b8faabb3b440b394543ae6f5b2f8f37';
         this.fee = auth.fee || 0.1;
         this.privateKey = auth.privateKey;
-        this.tx = require('minterjs-tx');
         this.node = new Minter({apiType: 'node', baseURL: this.host});
     }
 
