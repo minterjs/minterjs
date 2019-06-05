@@ -75,8 +75,6 @@ MinterJS.estimateCoinSell({coinToBuy/** optional, BIP default */, valueToSell, c
 
 Mx41b2cfc557dc4661a9526a5a3efcd2cc984339d1
 
-Or better:
-
 ## Minter node:
 
 We launched node, please delegate:
