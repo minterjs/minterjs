@@ -55,10 +55,14 @@ MinterJS.balances({address});
 MinterJS.delegate({coinSymbol /** = BIP */, feeCoinSymbol /** = BIP */, stake, publicKey  /** default: minter.store */});
 
 /** Delegations */ 
-MinterJS.delegations({address /** optional */});
+MinterJS.delegations({address /** optional */, coinToBuy /** optional, if yo want to get .totals and converted */});
 
 /** Transactions */
 MinterJS.transactions({address /** optional */, startblock /** optional */, endblock /** optional */, page /** optional */});
+
+/** Estimations */
+MinterJS.estimateCoinSell({coinToBuy/** optional, BIP default */, valueToSell, coinToSell});
+
 ```
 
 ## Contacts
