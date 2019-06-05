@@ -40,7 +40,7 @@ class MinterJS {
 
     async get({path, data}){
         const url = `${this.host}/${path}?${require('querystring').encode(data)}`;
-        let result = await axios.get(url).catch(err => log(err.message));
+        let result = await axios.get(url);
 
         return result && result.data || {};
     }
@@ -75,7 +75,7 @@ class MinterJS {
         valueToSell = Math.floor(valueToSell * 10000) / 10000;
         // const valueToSell = totals[key];
         const par = {coinToSell, coinToBuy: coinToBuy || 'BIP', valueToSell};
-        const estimate = await this.node.estimateCoinSell(par).catch(e => e);
+        const estimate = await this.node.estimateCoinSell(par);
         return estimate.will_get * (valueToSell - estimate.commission) / valueToSell;
     }
 
@@ -83,14 +83,14 @@ class MinterJS {
         const address = query.address || this.address;
         const querystring = query && `?${qs.stringify(query)}` || '';
         const path = `${this.explorer_api}/addresses/${address}/transactions${querystring}`;
-        const {data} = await axios.get(path).catch(e => log(e.message)) || {};
+        const {data} = await axios.get(path) || {};
         return data && data.data || {};
     }
 
     async balances({address}) {
         address = address || this.address;
         const path = `${this.explorer_api}/addresses/${address}`;
-        const {data} = await axios.get(path).catch(e => log(e.message)) || {};
+        const {data} = await axios.get(path) || {};
         return data && data.data && data.data.balances || {};
     }
 
@@ -122,13 +122,13 @@ class MinterJS {
     }
 
     async coin_info({symbol, height}){
-        const {result} = await this.get({path: 'coin_info', data: {symbol, height}}).catch(e => e);
-        return result || null;
+        const {result} = await this.get({path: 'coin_info', data: {symbol, height}});
+        return result;
     }
 
     async block({height}){
-        const {result} = await this.get({path: 'block', data: {height}}).catch(e => e);
-        return result || null;
+        const {result} = await this.get({path: 'block', data: {height}});
+        return result;
     }
 
 }
