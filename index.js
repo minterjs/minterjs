@@ -35,7 +35,7 @@ class MinterJS {
                 const total = results.totals[key];
                 const coinToSell = key;
                 const estimate = {};
-                estimate[key] = await this.estimateCoinSell({coinToBuy, coinToSell, valueToSell: total.value});
+                estimate[coinToBuy] = await this.estimateCoinSell({coinToBuy, coinToSell, valueToSell: total.value});
                 results.totals[key] = {...total, ...estimate, coin: coinToSell};
             }
         }
