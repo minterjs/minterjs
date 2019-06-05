@@ -1,6 +1,6 @@
 const axios = require('axios');
-const log = require('./libs/log');
-const {Minter, DelegateTxParams, SellAllTxParams} = require('minter-js-sdk');
+// const log = require('./libs/log');
+const {Minter, DelegateTxParams/*, SellAllTxParams*/} = require('minter-js-sdk');
 const qs = require('querystring');
 
 class MinterJS {
