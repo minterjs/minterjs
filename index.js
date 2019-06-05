@@ -52,12 +52,22 @@ class MinterJS {
         const results = data && data.data || {};
         results.totals = {};
         results.filter(e => e.coin).map(e => {
-            console.log(results);
             const value = parseFloat(e.value);
             results.totals[e.coin] && (results.totals[e.coin] += value) || (results.totals[e.coin] = value);
         });
         return results;
     }
+
+    /*async delegatedSum(totals, coinToBuy){
+        for (var key in totals){
+            // log(key);
+            valueToSell = Math.floor(totals[key] * 10000) / 10000;
+            const par = {coinToSell: key, coinToBuy: coinToBuy || 'BIP', valueToSell};
+            log(par);
+            const estimate = await this.node.estimateCoinSell(par);
+            console.log(estimate);
+        }
+    }*/
 
     async transactions(query = {}) {
         const address = query.address || this.address;
