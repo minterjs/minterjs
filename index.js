@@ -38,6 +38,8 @@ class MinterJS {
                 estimate[coinToBuy] = await this.estimateCoinSell({coinToBuy, coinToSell, valueToSell: total.value});
                 results.totals[key] = {...total, ...estimate, coin: coinToSell};
             }
+            results.converted = Object.values(results.totals)
+                .reduce((a, b) => ((typeof a == 'object') && a[coinToBuy] || a) + parseFloat(b[coinToBuy]));
         }
         return results;
     }
