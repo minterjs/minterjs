@@ -1,6 +1,6 @@
 const axios = require('axios');
 // const log = require('./libs/log');
-const {Minter, DelegateTxParams/*, SellAllTxParams*/} = require('minter-js-sdk');
+const {Minter, DelegateTxParams, SellAllTxParams} = require('minter-js-sdk');
 const qs = require('querystring');
 
 class MinterJS {
@@ -11,6 +11,9 @@ class MinterJS {
         this.fee = auth.fee || 0.1;
         this.privateKey = auth.privateKey;
         this.node = new Minter({apiType: 'node', baseURL: this.host});
+        this.publicKey = auth.publicKey;
+        this.chainId = auth.chainId || 1;
+
     }
 
     async get({path, data}){
@@ -39,15 +42,8 @@ class MinterJS {
                 results.totals[key] = {...total, ...estimate, coin: coinToSell};
             }
 
-            console.log(results);
-            const reduced = results.converted = Object.values(results.totals).map(t => t[coinToBuy]).reduce((a, b) => a + b); /*Object.values(results.totals)
-                .reduce((x, b) => {
-                    const a = ((typeof a == 'object') && a[coinToBuy] || a);
-                    console.log(a);
-                    return a + parseFloat(b[coinToBuy]);
-                });
-            console.log('reduced', reduced);*/
-            results.converted = (typeof reduced == 'object') && reduced[coinToBuy] || reduced;
+            const totals_array = Object.values(results.totals);
+            results.converted = (totals_array.length > 0) && totals_array.map(t => t[coinToBuy]).reduce((a, b) => a + b) || 0;
         }
         return results;
     }
@@ -78,20 +74,22 @@ class MinterJS {
         return data && data.data && data.data.balances || {};
     }
 
-    async delegate({publicKey, coinSymbol, stake, feeCoinSymbol, message}) {
+    async delegate({publicKey, coinSymbol, stake, feeCoinSymbol, message, chainId}) {
+        chainId = chainId || this.chainId;
         coinSymbol = coinSymbol || 'BIP';
         feeCoinSymbol = feeCoinSymbol || coinSymbol;
-        publicKey = publicKey || 'Mp629b5528f09d1c74a83d18414f2e4263e14850c47a3fac3f855f200111111111';
+        publicKey = publicKey || this.publicKey || 'Mp629b5528f09d1c74a83d18414f2e4263e14850c47a3fac3f855f200111111111';
         message = message || 'https://github.com/minterjs/minterjs';
-        const txParams = new DelegateTxParams({
+        const txr = {
             privateKey: this.privateKey,
-            chainId: 1,
+            chainId,
             publicKey,
             coinSymbol,
             stake,
             feeCoinSymbol,
             message,
-        });
+        };
+        const txParams = new DelegateTxParams(txr);
         return this.node.postTx(txParams);
     }
 
@@ -113,6 +111,28 @@ class MinterJS {
     async block({height}){
         const {result} = await this.get({path: 'block', data: {height}});
         return result;
+    }
+
+    async sellAllCoins({coinFrom, coinTo, chainId, privateKey, feeCoinSymbol}) {
+        chainId = chainId || this.chainId;
+        privateKey = privateKey || this.privateKey;
+
+        if (coinFrom === coinTo) {
+            return new Promise((resolve) => resolve('same'));
+        }
+
+        feeCoinSymbol = feeCoinSymbol || coinTo;
+
+        const txParams = new SellAllTxParams({
+            privateKey,
+            chainId,
+            coinFrom,
+            coinTo,
+            feeCoinSymbol,
+            message: 'MinterJS',
+        });
+
+        return this.node.postTx(txParams);
     }
 
 }
