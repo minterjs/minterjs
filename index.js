@@ -28,6 +28,7 @@ class MinterJS {
         const path = `${this.explorer_api}/addresses/${address}/delegations`;
         const {data} = await axios.get(path);
         const results = data && data.data || {};
+        results.meta = data && data.meta || undefined;
         results.totals = {};
         results.filter(e => e.coin).map(e => {
             const value = parseFloat(e.value);
