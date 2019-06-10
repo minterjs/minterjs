@@ -1,6 +1,6 @@
 const axios = require('axios');
 // const log = require('./libs/log');
-const {Minter, DelegateTxParams, SellAllTxParams} = require('minter-js-sdk');
+const {Minter, DelegateTxParams, SellAllTxParams, SendTxParams} = require('minter-js-sdk');
 const qs = require('querystring');
 
 class MinterJS {
@@ -92,6 +92,34 @@ class MinterJS {
         };
         const txParams = new DelegateTxParams(txr);
         return this.node.postTx(txParams);
+    }
+
+    async send({
+                   privateKey,
+                   chainId,
+                   address,
+                   amount,
+                   coinSymbol,
+                   feeCoinSymbol,
+                   gasPrice,
+                   message,
+               }) {
+        privateKey = privateKey || this.privateKey;
+        chainId = this.chainId || 1;
+        message = message || 'MinterJS';
+        gasPrice = gasPrice || 1;
+        feeCoinSymbol = feeCoinSymbol || coinSymbol;
+        const tx = new SendTxParams({
+            privateKey,
+            chainId,
+            address,
+            amount,
+            coinSymbol,
+            feeCoinSymbol,
+            gasPrice,
+            message,
+        });
+        return this.node.postTx(tx);
     }
 
     async peers(){
