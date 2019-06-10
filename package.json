@@ -1,6 +1,6 @@
 {
   "name": "minterjs",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "Minter Network API npm package for JavaScript Developers",
   "main": "index.js",
   "scripts": {
