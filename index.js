@@ -1,6 +1,6 @@
 const axios = require('axios');
 // const log = require('./libs/log');
-const {Minter, DelegateTxParams, SellAllTxParams, SendTxParams} = require('minter-js-sdk');
+const {Minter, DelegateTxParams, SellAllTxParams} = require('minter-js-sdk');
 const qs = require('querystring');
 
 class MinterJS {
@@ -49,7 +49,7 @@ class MinterJS {
         return results;
     }
 
-    async estimateCoinSell({coinToBuy, valueToSell, coinToSell}) {
+    async estimateCoinSell({coinToBuy, valueToSell, coinToSell, nofee}) {
         if (coinToBuy == coinToSell) {
             return valueToSell;
         }
@@ -57,7 +57,8 @@ class MinterJS {
         valueToSell = Math.floor(valueToSell * 100000000000000) / 100000000000000;
         const par = {coinToSell, coinToBuy: coinToBuy || 'BIP', valueToSell};
         const estimate = await this.node.estimateCoinSell(par);
-        return estimate.will_get * (valueToSell - estimate.commission) / valueToSell;
+        const fee = (!nofee) && estimate.commission || 0;
+        return estimate.will_get * (valueToSell - fee) / valueToSell;
     }
 
     async transactions(query = {}) {
